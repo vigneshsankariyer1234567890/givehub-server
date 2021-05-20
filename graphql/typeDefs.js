@@ -1,20 +1,23 @@
 const { gql } = require("apollo-server");
 
 module.exports = gql`
-  type Post {
+  # data fields in Post
+  type Post { 
     id: ID!
     body: String!
     createdAt: String!
     username: String!
   }
-  type User{
+  # data fields in User
+  type User{ 
     id: ID!
     email: String!
     token: String!
     username: String!
-    email: String!
+    createdAt: String!
   }
-  input RegisterInput{
+  # for the register form
+  input RegisterInput{ 
     username: String!
     password: String!
     confirmPassword: String!
@@ -25,5 +28,6 @@ module.exports = gql`
   }
   type Mutation {
     register(registerInput: RegisterInput): User!
+    login(username: String!, password: String!): User!
   }
 `;
