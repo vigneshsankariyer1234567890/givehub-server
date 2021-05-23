@@ -23,11 +23,16 @@ module.exports = gql`
     confirmPassword: String!
     email: String!
   }
+  # how to query the database 
   type Query {
     getPosts: [Post]
+    getPost(postId: ID!): Post
   }
+  # functions to change the database
   type Mutation {
     register(registerInput: RegisterInput): User!
     login(username: String!, password: String!): User!
+    createPost(body: String!): Post!
+    deletePost(postId: ID!): String!
   }
 `;
