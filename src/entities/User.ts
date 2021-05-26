@@ -5,7 +5,7 @@ import { Field, ID, ObjectType } from "type-graphql";
 
 @ObjectType()
 @Entity()
-export class Post {
+export class User {
   
   @PrimaryKey()
   _id: ObjectId;
@@ -23,6 +23,9 @@ export class Post {
   updatedAt = new Date();
 
   @Field(() => String)
+  @Property({type: 'text', unique: true})
+  username!: string;
+
   @Property({type: 'text'})
-  title!: string;
+  password!: string;
 }

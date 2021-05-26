@@ -1,7 +1,7 @@
 import { Post } from "../entities/Post";
 import { MyContext } from "../types";
-import { Arg, Ctx, Int, Mutation, Query, Resolver } from "type-graphql";
-import { ObjectId } from "@mikro-orm/mongodb";
+import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
+
 
 @Resolver()
 export class PostResolver {
@@ -11,7 +11,7 @@ export class PostResolver {
     }
 
     @Query(() => Post, {nullable: true})
-    post(@Arg('_id') id: string
+    post(@Arg('id') id: string
     ,@Ctx() {em}: MyContext): Promise<Post | null> {
         return em.findOne(Post, { id });
     }
@@ -23,5 +23,35 @@ export class PostResolver {
             const post = em.create(Post, {title});
             await em.persistAndFlush(post)
             return post;
-        }
+    }
+
+    @Mutation(() => Post, {nullable: true})
+    async updatePost(
+        @Arg("id") id: string
+        , @Arg("title", () => String, { nullable: true }) title: string
+        , @Ctx() {em}: MyContext): Promise<Post | null> {
+            const post = await em.findOne(Post, { id });
+            if (!post) {
+                return null;
+            }
+            if (typeof title !== 'undefined') {
+                post.title = title;
+                await em.persistAndFlush(post);
+            }
+            return post;
+    }
+
+    @Mutation(() => Boolean)
+    async deletePost(
+        @Arg("id") id: string
+        , @Ctx() {em}: MyContext): Promise<boolean> {
+            try{
+                await em.nativeDelete(Post, { id });
+                return true;
+            } catch(error){
+                return false;
+            }
+    }
+
+
 }
