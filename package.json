@@ -61,5 +61,8 @@
   "_moduleAliases": {
     "@entities": "dist/entities",
     "@resolvers": "dist/resolvers"
+  },
+  "engines": {
+    "node": "v14.15.1"
   }
 }
