@@ -1,2 +1,4 @@
 node_modules
 dist
+dump.rdb
+redis-2.0.0-rc1.tar.gz
