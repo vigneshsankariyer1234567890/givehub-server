@@ -18,6 +18,7 @@ import cors from 'cors';
 
 const main = async () => {
     const orm = await MikroORM.init(mikroOrmConfig);
+    const PORT = process.env.PORT || 4000;
 
     const app = express();
     app.set('trust proxy',1);
@@ -64,8 +65,8 @@ const main = async () => {
         cors: { origin: false} 
     });
     
-    app.listen(4000, () => {
-        console.log('server started on localhost:4000')
+    app.listen(PORT, () => {
+        console.log(`server started on localhost: ${ PORT }`)
     })
 
     // const post = orm.em.create(Post, {title: 'my first post'});
