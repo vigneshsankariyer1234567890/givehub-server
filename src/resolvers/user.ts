@@ -9,6 +9,8 @@ class UsernamePasswordInput {
     username: string
     @Field()
     password: string
+    @Field()
+    email: string
 }
 
 @ObjectType()
@@ -51,6 +53,8 @@ export class UserResolver {
         @Arg('options') options: UsernamePasswordInput,
         @Ctx() {em, req}: MyContext
     ): Promise<UserResponse> {
+        const regEx = /^([0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\w]*[0-9a-zA-Z]\.)+[a-zA-Z]{2,9})$/;
+        
         if (options.username.length <= 7) {
             return {
                 errors: [{
@@ -59,6 +63,15 @@ export class UserResolver {
                 }]
             }
         }
+        if (!regEx.test(options.email)){
+            return {
+                errors: [{
+                    field: 'email',
+                    message: 'valid email must be provided'
+                }]
+            }
+        }
+
         if (options.password.length <= 8) {
             return {
                 errors: [{
